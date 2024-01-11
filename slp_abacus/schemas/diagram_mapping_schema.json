@@ -1,0 +1,99 @@
+{
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "title": "Mapping File",
+    "type": "object",
+    "required": ["trustzones", "components"],
+    "properties": {
+        "trustzones": {
+            "type": "array",
+            "items": {
+                "type": "object",
+                "required": ["label", "type"],
+                "properties": {
+                    "label": {"$ref": "#/definitions/LabelUnion"},
+                    "type": {"$ref": "#/definitions/query"}
+                }
+            }
+        },
+        "components": {
+            "type": "array",
+            "items": {
+                "type": "object",
+                "required": ["label", "type"],
+                "properties": {
+                    "label": {"$ref": "#/definitions/LabelUnion"},
+                    "id": {"$ref": "#/definitions/query"},
+                    "type": {"$ref": "#/definitions/query"}
+                }
+            }        
+        },
+        "configuration":{
+         "$ref":"#/definitions/Configuration"
+      }
+    },
+    "definitions": {
+        "query": {
+            "anyOf": [
+                {
+                    "type": "string"
+                }
+            ]
+        },
+        "LabelUnion":{
+         "anyOf":[
+            {
+               "type":"array",
+               "items":{
+                  "type":"string"
+               }
+            },
+            {
+               "$ref":"#/definitions/RegExClass"
+            },
+            {
+               "type":"string"
+            }
+         ],
+         "title":"LabelUnion"
+      },
+      "RegExClass":{
+         "type":"object",
+         "additionalProperties":false,
+         "properties":{
+            "$regex":{
+               "type":"string"
+            }
+         },
+         "required":[
+            "$regex"
+         ],
+         "title":"RegExClass"
+      },
+      "Configuration":{
+         "type":"object",
+         "additionalProperties":false,
+         "properties":{
+            "catch_all":{
+              "anyOf": [
+                {
+                  "type":"string"
+                },
+                {
+                  "type":"boolean"
+                }
+              ]
+            },
+             "skip":{
+               "type":"array",
+               "items":{
+                 "type":"string"
+               }
+            }
+         },
+         "required":[
+
+         ],
+         "title":"Configuration"
+      }
+    }
+}

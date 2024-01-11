@@ -1,0 +1,78 @@
+{
+   "resource":[
+      {
+         "resource_id":"aws_security_group.alb",
+         "resource_name":"alb",
+         "resource_type":"aws_security_group",
+         "resource_values":{
+            "description":"Allow access HTTP and SSH traffic",
+            "ingress":[
+               {
+                  "cidr_blocks":[
+                     "0.0.0.0/32"
+                  ],
+                  "description":"HTTP access to ALB",
+                  "from_port":"80",
+                  "ipv6_cidr_blocks":[
+
+                  ],
+                  "prefix_list_ids":[
+
+                  ],
+                  "protocol":"tcp",
+                  "security_groups":[
+
+                  ],
+                  "self":"false",
+                  "to_port":"80"
+               },
+               {
+                  "cidr_blocks":[
+                     "255.255.255.0/32"
+                  ],
+                  "description":"SSH access access to ALB",
+                  "from_port":"22",
+                  "ipv6_cidr_blocks":[
+
+                  ],
+                  "prefix_list_ids":[
+
+                  ],
+                  "protocol":"tcp",
+                  "security_groups":[
+
+                  ],
+                  "self":"false",
+                  "to_port":"22"
+               }
+            ],
+            "name":"ALB SG",
+            "revoke_rules_on_delete":"false",
+            "tags":"null",
+            "timeouts":"null"
+         },
+         "resource_configuration":{
+            "expressions":{
+               "description":{
+                  "constant_value":"Allow access HTTP and SSH traffic"
+               },
+               "ingress":{
+                  "references":[
+                     "var.ingress_tcp_80_cidrs",
+                     "var.ingress_tcp_22_cidrs"
+                  ]
+               },
+               "name":{
+                  "constant_value":"ALB SG"
+               },
+               "vpc_id":{
+                  "references":[
+                     "module.vpc.vpc_id",
+                     "module.vpc"
+                  ]
+               }
+            }
+         }
+      }
+   ]
+}
