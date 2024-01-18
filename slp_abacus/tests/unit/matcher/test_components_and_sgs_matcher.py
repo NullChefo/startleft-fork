@@ -1,7 +1,7 @@
 from unittest.mock import Mock
 
-from slp_tfplan.slp_tfplan.matcher import ComponentsAndSGsMatcher
-from slp_tfplan.tests.util.builders import build_security_group_mock, build_mocked_otm, build_mocked_component
+from slp_abacus.slp_abacus.matcher import ComponentsAndSGsMatcher
+from slp_abacus.tests.util.builders import build_security_group_mock, build_mocked_otm, build_mocked_component
 
 _component_a = build_mocked_component({
     'component_name': 'component_a',

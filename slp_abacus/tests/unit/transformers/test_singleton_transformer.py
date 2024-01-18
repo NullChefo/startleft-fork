@@ -1,8 +1,8 @@
 from random import randrange
 
 from otm.otm.entity.parent_type import ParentType
-from slp_tfplan.slp_tfplan.transformers.singleton_transformer import SingletonTransformer
-from slp_tfplan.tests.util.builders import DEFAULT_TRUSTZONE, build_otm_type, \
+from slp_abacus.slp_abacus.transformers.singleton_transformer import SingletonTransformer
+from slp_abacus.tests.util.builders import DEFAULT_TRUSTZONE, build_otm_type, \
     build_mocked_component, build_mocked_otm
 
 SINGLETON_CONFIG = "$singleton"

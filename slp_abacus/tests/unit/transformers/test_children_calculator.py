@@ -1,6 +1,6 @@
-from slp_tfplan.slp_tfplan.transformers.children_calculator import ChildrenCalculator
-from slp_tfplan.tests.util.asserts import assert_parents
-from slp_tfplan.tests.util.builders import build_tfgraph, \
+from slp_abacus.slp_abacus.transformers.children_calculator import ChildrenCalculator
+from slp_abacus.tests.util.asserts import assert_parents
+from slp_abacus.tests.util.builders import build_tfgraph, \
     build_mocked_component, build_mocked_otm
 
 CHILD_TYPE = 'aws_ecs_task_definition'

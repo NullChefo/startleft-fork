@@ -2,9 +2,9 @@ from unittest.mock import Mock
 
 from pytest import mark, param
 
-from slp_tfplan.slp_tfplan.matcher.strategies.sg_sg_match_strategies import \
+from slp_abacus.slp_abacus.matcher.strategies.sg_sg_match_strategies import \
     SecurityGroupByGraphStrategy, SecurityGroupByConfigurationStrategy
-from slp_tfplan.slp_tfplan.objects.tfplan_objects import SecurityGroup
+from slp_abacus.slp_abacus.objects.abacus_objects import SecurityGroup
 
 
 class TestSecurityGroupByConfigurationStrategy:

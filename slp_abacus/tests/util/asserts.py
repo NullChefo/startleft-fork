@@ -22,7 +22,7 @@ def assert_parent(component: AbacusComponent, parent_id: str = None):
 
 
 ##########
-# TFPLAN #
+# ABACUS #
 ##########
 def assert_resource_values(properties: {}):
     assert properties['val1'] == 'value1'

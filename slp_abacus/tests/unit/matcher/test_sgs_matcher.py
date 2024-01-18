@@ -1,8 +1,8 @@
 from collections import Counter
 from unittest.mock import Mock
 
-from slp_tfplan.slp_tfplan.matcher import SGsMatcher
-from slp_tfplan.tests.util.builders import build_security_group_mock, build_mocked_otm
+from slp_abacus.slp_abacus.matcher import SGsMatcher
+from slp_abacus.tests.util.builders import build_security_group_mock, build_mocked_otm
 
 sg_1 = build_security_group_mock('SG1')
 sg_2 = build_security_group_mock('SG2')

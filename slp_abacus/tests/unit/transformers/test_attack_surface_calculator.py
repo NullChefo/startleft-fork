@@ -5,13 +5,13 @@ import pytest
 from pytest import param
 
 from otm.otm.entity.trustzone import Trustzone
-from slp_tfplan.slp_tfplan.matcher import ComponentsAndSGsMatcher
-from slp_tfplan.slp_tfplan.objects.tfplan_objects import SecurityGroupCIDR, TFPlanComponent
-from slp_tfplan.slp_tfplan.relationship.component_relationship_calculator import ComponentRelationshipCalculator, \
+from slp_abacus.slp_abacus.matcher import ComponentsAndSGsMatcher
+from slp_abacus.slp_abacus.objects.abacus_objects import SecurityGroupCIDR, AbacusComponent
+from slp_abacus.slp_abacus.relationship.component_relationship_calculator import ComponentRelationshipCalculator, \
     ComponentRelationshipType
-from slp_tfplan.slp_tfplan.transformers.attack_surface_calculator import AttackSurfaceCalculator, \
+from slp_abacus.slp_abacus.transformers.attack_surface_calculator import AttackSurfaceCalculator, \
     _generate_client_id, _generate_client_name
-from slp_tfplan.tests.util.builders import build_mocked_component, build_mocked_otm, build_security_group_cidr_mock, \
+from slp_abacus.tests.util.builders import build_mocked_component, build_mocked_otm, build_security_group_cidr_mock, \
     build_security_group_mock
 
 _component_a = build_mocked_component({
@@ -41,7 +41,7 @@ ALL_ALLOWED_CIDR_DESCRIPTION = 'All inbound connections allowed'
 
 
 @pytest.fixture
-def mock_components_in_sgs(mocker, mocked_components_in_sgs: Dict[str, List[TFPlanComponent]]):
+def mock_components_in_sgs(mocker, mocked_components_in_sgs: Dict[str, List[AbacusComponent]]):
     if mocked_components_in_sgs is None:
         mocked_components_in_sgs = {}
     mocker.patch.object(ComponentsAndSGsMatcher, 'match', return_value=mocked_components_in_sgs)
@@ -49,19 +49,19 @@ def mock_components_in_sgs(mocker, mocked_components_in_sgs: Dict[str, List[TFPl
 
 @pytest.fixture
 def mock_get_variable_name_by_value(mocker, mocked_var_name: str):
-    mocker.patch('slp_tfplan.slp_tfplan.transformers.attack_surface_calculator._get_variable_name_by_value',
+    mocker.patch('slp_abacus.slp_abacus.transformers.attack_surface_calculator._get_variable_name_by_value',
                  side_effect=[mocked_var_name])
 
 
 @pytest.fixture
 def mock_is_valid_cidr(mocker, mocked_is_valid_cidr: str):
-    mocker.patch('slp_tfplan.slp_tfplan.transformers.attack_surface_calculator._is_valid_cidr',
+    mocker.patch('slp_abacus.slp_abacus.transformers.attack_surface_calculator._is_valid_cidr',
                  side_effect=[mocked_is_valid_cidr])
 
 
 @pytest.fixture
 def mock_component_relationship_calculator(mocker):
-    def get_relationship(component_from: TFPlanComponent, component_to: TFPlanComponent):
+    def get_relationship(component_from: AbacusComponent, component_to: AbacusComponent):
         if component_from == component_to:
             return ComponentRelationshipType.SAME
         if component_from == _component_a and component_to == _component_b:
@@ -140,7 +140,7 @@ class TestAttackSurfaceCalculator:
         pytest.param({'SG1': [_component_a]}, id='SG1 related to component_a'),
     ])
     def test_no_security_group_cidr_info(self,
-                                         mock_components_in_sgs: Dict[str, List[TFPlanComponent]],
+                                         mock_components_in_sgs: Dict[str, List[AbacusComponent]],
                                          mocked_components_in_sgs):
         # GIVEN a Security Group without CIDR info
         security_groups = [build_security_group_mock('SG1')]
@@ -178,7 +178,7 @@ class TestAttackSurfaceCalculator:
     ])
     def test_ingress_dataflows(self,
                                ingress_cidr: SecurityGroupCIDR,
-                               mocked_components_in_sgs: Dict[str, List[TFPlanComponent]], expected_id: str):
+                               mocked_components_in_sgs: Dict[str, List[AbacusComponent]], expected_id: str):
         # GIVEN an Ingress HTTP Security Group from Internet to component_a
         security_groups = [build_security_group_mock('SG1', ingress_cidr=[ingress_cidr])]
 
@@ -231,7 +231,7 @@ class TestAttackSurfaceCalculator:
         pytest.param('169.254.0.0/0', {'SG1': [_component_a]}, id='Link-local IP address'),
         pytest.param('255.255.255.255/32', {'SG1': [_component_a]}, id='Broadcast IP address'),
     ])
-    def test_ip_not_allowed(self, ingress_cidr_ip: str, mocked_components_in_sgs: Dict[str, List[TFPlanComponent]]):
+    def test_ip_not_allowed(self, ingress_cidr_ip: str, mocked_components_in_sgs: Dict[str, List[AbacusComponent]]):
         # GIVEN an Ingress HTTP Security Group from a private ip to component_a
         security_groups = [build_security_group_mock('SG1', ingress_cidr=[build_security_group_cidr_mock(
             [ingress_cidr_ip], description='Ingress HTTP', from_port=80, to_port=80, protocol='tcp')])]
@@ -261,7 +261,7 @@ class TestAttackSurfaceCalculator:
     @pytest.mark.parametrize('mocked_components_in_sgs', [
         pytest.param({'SG1': [_component_a], 'SG2': [_component_a]}, id='to the same component'),
     ])
-    def test_multiple_security_group_cidr(self, mocked_components_in_sgs: Dict[str, List[TFPlanComponent]]):
+    def test_multiple_security_group_cidr(self, mocked_components_in_sgs: Dict[str, List[AbacusComponent]]):
         security_groups = [
             # GIVEN an Ingress HTTP Security Group from Internet to component_a
             build_security_group_mock('SG1', ingress_cidr=[build_security_group_cidr_mock(
@@ -321,7 +321,7 @@ class TestAttackSurfaceCalculator:
     ])
     def test_security_group_cidr_multiple_ips(self,
                                               cidr_blocks: List[str],
-                                              mocked_components_in_sgs: Dict[str, List[TFPlanComponent]],
+                                              mocked_components_in_sgs: Dict[str, List[AbacusComponent]],
                                               expected_client_id: str, expected_client_name: str):
         # GIVEN an Ingress HTTP Security Group from a multiple ips to component_a
         security_groups = [build_security_group_mock('SG1', ingress_cidr=[build_security_group_cidr_mock(
@@ -367,7 +367,7 @@ class TestAttackSurfaceCalculator:
         pytest.param({'SG1': [_component_a]}, id='name is attack surface client type')
     ])
     def test_security_group_without_description_and_multiple_cidrs(self, mocked_components_in_sgs: Dict[
-        str, List[TFPlanComponent]]):
+        str, List[AbacusComponent]]):
         # GIVEN an Ingress HTTP Security Group from Internet to component_a
         security_groups = [build_security_group_mock('SG1', ingress_cidr=[
             build_security_group_cidr_mock(
@@ -407,7 +407,7 @@ class TestAttackSurfaceCalculator:
     ])
     def test_generate_security_group_cidr_tags(self,
                                                ingress_cidr: SecurityGroupCIDR,
-                                               mocked_components_in_sgs: Dict[str, List[TFPlanComponent]],
+                                               mocked_components_in_sgs: Dict[str, List[AbacusComponent]],
                                                expected_tags: List[str]):
         # GIVEN an Ingress HTTP Security Group from Internet to component_a
         security_groups = [build_security_group_mock('SG1', ingress_cidr=[ingress_cidr])]
@@ -434,7 +434,7 @@ class TestAttackSurfaceCalculator:
         pytest.param({'SG1': [_component_a, _component_b]}, id='to the same component'),
     ])
     def test_remove_parent_dataflows(self,
-                                     mock_components_in_sgs: Dict[str, List[TFPlanComponent]],
+                                     mock_components_in_sgs: Dict[str, List[AbacusComponent]],
                                      mocked_components_in_sgs):
         # GIVEN an Ingress HTTP Security Group from Internet to component_a and component_b
         security_groups = [build_security_group_mock('SG1', ingress_cidr=[build_security_group_cidr_mock(

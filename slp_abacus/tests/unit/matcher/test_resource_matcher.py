@@ -3,9 +3,9 @@ from unittest.mock import Mock
 
 from pytest import raises, mark, param
 
-from slp_tfplan.slp_tfplan.matcher.resource_matcher import ResourceMatcher
-from slp_tfplan.slp_tfplan.matcher.strategies.match_strategy import MatchStrategy
-from slp_tfplan.tests.util.builders import MockedException
+from slp_abacus.slp_abacus.matcher.resource_matcher import ResourceMatcher
+from slp_abacus.slp_abacus.matcher.strategies.match_strategy import MatchStrategy
+from slp_abacus.tests.util.builders import MockedException
 
 ERROR_MESSAGE = 'Error matching resources'
 

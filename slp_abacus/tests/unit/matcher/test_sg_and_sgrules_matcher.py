@@ -1,6 +1,6 @@
 from unittest.mock import MagicMock
 
-from slp_tfplan.slp_tfplan.matcher import SGAndSGRulesMatcher
+from slp_abacus.slp_abacus.matcher import SGAndSGRulesMatcher
 
 sg_1 = MagicMock()
 sg_rule_1 = MagicMock()

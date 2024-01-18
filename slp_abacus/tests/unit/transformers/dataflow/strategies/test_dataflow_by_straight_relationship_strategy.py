@@ -4,12 +4,12 @@ from _pytest.fixtures import fixture
 from networkx import DiGraph
 from pytest import mark, param
 
-from slp_tfplan.slp_tfplan.graph.relationships_extractor import RelationshipsExtractor
-from slp_tfplan.slp_tfplan.objects.tfplan_objects import TFPlanComponent
-from slp_tfplan.slp_tfplan.relationship.component_relationship_calculator import ComponentRelationshipCalculator
-from slp_tfplan.slp_tfplan.transformers.dataflow.strategies.dataflow_by_straight_relationship_strategy import \
+from slp_abacus.slp_abacus.graph.relationships_extractor import RelationshipsExtractor
+from slp_abacus.slp_abacus.objects.abacus_objects import AbacusComponent
+from slp_abacus.slp_abacus.relationship.component_relationship_calculator import ComponentRelationshipCalculator
+from slp_abacus.slp_abacus.transformers.dataflow.strategies.dataflow_by_straight_relationship_strategy import \
     DataflowByStraightRelationshipStrategy
-from slp_tfplan.tests.util.builders import build_tfgraph, build_simple_mocked_component, build_mocked_otm
+from slp_abacus.tests.util.builders import build_tfgraph, build_simple_mocked_component, build_mocked_otm
 
 
 def create_relationships_extractor_mock(graph: DiGraph):
@@ -30,7 +30,7 @@ class TestDataflowByStraightRelationshipStrategy:
         param([build_simple_mocked_component('A'), build_simple_mocked_component('B')], False,
               id='unrelated_components')
     ])
-    def test_no_related_components_no_dataflows(self, components: List[TFPlanComponent],
+    def test_no_related_components_no_dataflows(self, components: List[AbacusComponent],
                                                 mocked_are_components_related: bool):
         # GIVEN a set of non-related components
 

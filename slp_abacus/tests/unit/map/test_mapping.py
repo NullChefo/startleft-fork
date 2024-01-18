@@ -4,7 +4,7 @@ from unittest.mock import MagicMock
 import pytest
 
 from slp_base import MappingFileNotValidError
-from slp_tfplan.slp_tfplan.map.mapping import Mapping, ComponentMapping, TrustZoneMapping, AttackSurface
+from slp_abacus.slp_abacus.map.mapping import Mapping, ComponentMapping, TrustZoneMapping, AttackSurface
 
 TZ_TYPE_0_ID = '944a88f6-b08a-4eee-a501-4499b12d1956'
 TZ_TYPE_1_ID = 'e7b84a79-66ea-4322-8d5e-5029ef7ea007'

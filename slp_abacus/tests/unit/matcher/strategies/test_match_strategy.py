@@ -2,8 +2,8 @@ from unittest.mock import Mock
 
 from pytest import raises
 
-from slp_tfplan.slp_tfplan.matcher.strategies.match_strategy import MatchStrategy, MatchStrategyContainer
-from slp_tfplan.tests.util.builders import get_instance_classes
+from slp_abacus.slp_abacus.matcher.strategies.match_strategy import MatchStrategy, MatchStrategyContainer
+from slp_abacus.tests.util.builders import get_instance_classes
 
 
 class TestMatchStrategy:

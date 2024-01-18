@@ -4,12 +4,12 @@ from unittest.mock import Mock, MagicMock
 from _pytest.fixtures import fixture
 from pytest import mark, param
 
-from slp_tfplan.slp_tfplan.matcher import ComponentsAndSGsMatcher, SGsMatcher
-from slp_tfplan.slp_tfplan.objects.tfplan_objects import TFPlanComponent
-from slp_tfplan.slp_tfplan.relationship.component_relationship_calculator import ComponentRelationshipCalculator
-from slp_tfplan.slp_tfplan.transformers.dataflow.strategies.dataflow_by_security_groups_strategy import \
+from slp_abacus.slp_abacus.matcher import ComponentsAndSGsMatcher, SGsMatcher
+from slp_abacus.slp_abacus.objects.abacus_objects import AbacusComponent
+from slp_abacus.slp_abacus.relationship.component_relationship_calculator import ComponentRelationshipCalculator
+from slp_abacus.slp_abacus.transformers.dataflow.strategies.dataflow_by_security_groups_strategy import \
     DataflowBySecurityGroupsStrategy
-from slp_tfplan.tests.util.builders import build_simple_mocked_component
+from slp_abacus.tests.util.builders import build_simple_mocked_component
 
 
 def build_mocked_matcher(are_related: Callable) -> Mock:
@@ -19,7 +19,7 @@ def build_mocked_matcher(are_related: Callable) -> Mock:
 
 
 @fixture(autouse=True)
-def mock_components_in_sgs(mocker, mocked_components_in_sgs: Dict[str, List[TFPlanComponent]]):
+def mock_components_in_sgs(mocker, mocked_components_in_sgs: Dict[str, List[AbacusComponent]]):
     if mocked_components_in_sgs is None:
         mocked_components_in_sgs = {}
     mocker.patch.object(ComponentsAndSGsMatcher, 'match', return_value=mocked_components_in_sgs)
@@ -50,7 +50,7 @@ class TestDataflowBySecurityGroupsStrategy:
         param({'SG1': [tf_plan_component_a]}, {}, False, id='no sg in security groups'),
         param({'SG1': [tf_plan_component_a]}, {'SG2': ['SG3']}, False, id='unrelated_components and SGs'),
     ])
-    def test_no_related_components_no_dataflows(self, mocked_components_in_sgs: Dict[str, List[TFPlanComponent]],
+    def test_no_related_components_no_dataflows(self, mocked_components_in_sgs: Dict[str, List[AbacusComponent]],
                                                 mocked_sg_in_sgs: Dict[str, List[str]],
                                                 mocked_are_components_related: bool):
         # GIVEN a set of unrelated components and security groups
@@ -68,7 +68,7 @@ class TestDataflowBySecurityGroupsStrategy:
                           param({'SG1': [tf_plan_component_a], 'SG2': [tf_plan_component_b]}, {'SG2': ['SG1']}, False,
                                 'B', 'A', False, id='SG2 to SG1')
                       ])
-    def test_two_related_sgs(self, mocked_components_in_sgs: Dict[str, List[TFPlanComponent]],
+    def test_two_related_sgs(self, mocked_components_in_sgs: Dict[str, List[AbacusComponent]],
                              mocked_sg_in_sgs: Dict[str, List[str]], mocked_are_components_related: bool,
                              expected_source: str, expected_destination: str, bidirectional: bool):
         # GIVEN a set of related components and security groups
@@ -94,7 +94,7 @@ class TestDataflowBySecurityGroupsStrategy:
                           param({'SG1': [tf_plan_component_a], 'SG2': [tf_plan_component_b]}, {'SG2': ['SG1']}, True,
                                 'B', 'A', False, id='SG2 to SG1')
                       ])
-    def test_are_componentes_related(self, mocked_components_in_sgs: Dict[str, List[TFPlanComponent]],
+    def test_are_componentes_related(self, mocked_components_in_sgs: Dict[str, List[AbacusComponent]],
                                         mocked_sg_in_sgs: Dict[str, List[str]], mocked_are_components_related: bool,
                                         expected_source: str, expected_destination: str, bidirectional: bool):
         # GIVEN a set of related components and security groups

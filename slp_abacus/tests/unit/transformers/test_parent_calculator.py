@@ -1,6 +1,6 @@
-from slp_tfplan.slp_tfplan.transformers.parent_calculator import ParentCalculator
-from slp_tfplan.tests.util.asserts import assert_parents
-from slp_tfplan.tests.util.builders import build_tfgraph, \
+from slp_abacus.slp_abacus.transformers.parent_calculator import ParentCalculator
+from slp_abacus.tests.util.asserts import assert_parents
+from slp_abacus.tests.util.builders import build_tfgraph, \
     build_mocked_otm, build_mocked_component
 
 CHILD_TYPE = 'aws_instance'

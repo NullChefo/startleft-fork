@@ -8,7 +8,7 @@ from networkx import DiGraph
 from otm.otm.entity.dataflow import Dataflow
 from otm.otm.entity.parent_type import ParentType
 from otm.otm.entity.trustzone import Trustzone
-from slp_tfplan.slp_tfplan.objects.tfplan_objects import TFPlanComponent, TFPlanOTM, SecurityGroup, \
+from slp_abacus.slp_abacus.objects.abacus_objects import AbacusComponent, AbacusOTM, SecurityGroup, \
     LaunchTemplate, SecurityGroupCIDR, SecurityGroupCIDRType
 
 DEFAULT_TRUSTZONE = Trustzone(
@@ -16,9 +16,9 @@ DEFAULT_TRUSTZONE = Trustzone(
     name='default-trustzone-name',
     type='default-trustzone-type')
 
-TFPLAN_MINIMUM_STRUCTURE = {'planned_values': {'root_module': {}}}
+ABACUS_MINIMUM_STRUCTURE = {'planned_values': {'root_module': {}}}
 MIN_FILE_SIZE = 20
-MAX_TFPLAN_FILE_SIZE = 5 * 1024 * 1024  # 5MB
+MAX_ABACUS_FILE_SIZE = 5 * 1024 * 1024  # 5MB
 MAX_TFGRAPH_FILE_SIZE = 2 * 1024 * 1024  # 2MB
 
 
@@ -26,7 +26,7 @@ MAX_TFGRAPH_FILE_SIZE = 2 * 1024 * 1024  # 2MB
 # OTM #
 #######
 
-def build_mocked_otm(components: List[TFPlanComponent],
+def build_mocked_otm(components: List[AbacusComponent],
                      dataflows: List[Dataflow] = None,
                      security_groups: List[SecurityGroup] = None,
                      variables: Dict[str, Union[list, str]] = None,
@@ -41,7 +41,7 @@ def build_mocked_otm(components: List[TFPlanComponent],
 
 
 def build_base_otm(default_trustzone: Trustzone = None):
-    otm = TFPlanOTM(
+    otm = AbacusOTM(
         project_id='project_id',
         project_name='project_name',
         components=[],
@@ -55,12 +55,12 @@ def build_base_otm(default_trustzone: Trustzone = None):
     return otm
 
 
-def build_mocked_component(component: Dict) -> TFPlanComponent:
+def build_mocked_component(component: Dict) -> AbacusComponent:
     component_name = component['component_name']
     tf_type = component['tf_type']
     component_id = component.get('id', build_component_id(component_name, tf_type))
 
-    return TFPlanComponent(
+    return AbacusComponent(
         component_id=component_id,
         name=component_name,
         component_type=component.get('component_type', build_otm_type(tf_type)),
@@ -86,7 +86,7 @@ def build_simple_mocked_component(id: str, parent: str = None, clones_ids: List[
 
 
 def build_mocked_dataflow(
-        component_a: TFPlanComponent, component_b: TFPlanComponent, name: str = None,
+        component_a: AbacusComponent, component_b: AbacusComponent, name: str = None,
         bidirectional: bool = False, attributes=None, tags=None):
     return Dataflow(
         f"{f'{name}-' if name else ''}{component_a.id} -> {component_b.id}",
@@ -124,19 +124,19 @@ def build_otm_type(component_type: str) -> str:
 
 
 ##########
-# TFPLAN #
+# ABACUS #
 ##########
 
-def build_tfplan(resources: List[Dict] = None, child_modules: List[Dict] = None) -> {}:
-    tfplan = deepcopy(TFPLAN_MINIMUM_STRUCTURE)
+def build_abacus(resources: List[Dict] = None, child_modules: List[Dict] = None) -> {}:
+    abacus = deepcopy(ABACUS_MINIMUM_STRUCTURE)
 
     if resources:
-        tfplan['planned_values']['root_module']['resources'] = resources
+        abacus['planned_values']['root_module']['resources'] = resources
 
     if child_modules:
-        tfplan['planned_values']['root_module']['child_modules'] = child_modules
+        abacus['planned_values']['root_module']['child_modules'] = child_modules
 
-    return tfplan
+    return abacus
 
 
 def generate_resources(resource_count: int, module_child: bool = False) -> List[Dict]:

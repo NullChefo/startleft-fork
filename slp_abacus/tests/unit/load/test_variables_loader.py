@@ -1,6 +1,6 @@
 from unittest.mock import MagicMock
 
-from slp_tfplan.slp_tfplan.load.variables_loader import VariablesLoader
+from slp_abacus.slp_abacus.load.variables_loader import VariablesLoader
 
 VARIABLES = {
     "v_1": {

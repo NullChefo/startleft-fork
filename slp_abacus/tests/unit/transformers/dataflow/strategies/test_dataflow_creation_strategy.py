@@ -2,9 +2,9 @@ from unittest.mock import Mock
 
 from pytest import raises, mark, param
 
-from slp_tfplan.slp_tfplan.transformers.dataflow.strategies.dataflow_creation_strategy import DataflowCreationStrategy, \
+from slp_abacus.slp_abacus.transformers.dataflow.strategies.dataflow_creation_strategy import DataflowCreationStrategy, \
     DataflowCreationStrategyContainer, create_dataflow
-from slp_tfplan.tests.util.builders import get_instance_classes
+from slp_abacus.tests.util.builders import get_instance_classes
 
 
 class TestDataflowCreationStrategy:

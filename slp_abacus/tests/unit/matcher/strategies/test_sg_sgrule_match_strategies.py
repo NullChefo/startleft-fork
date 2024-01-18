@@ -1,6 +1,6 @@
 from unittest.mock import Mock
 
-from slp_tfplan.slp_tfplan.matcher.strategies.sg_sg_rule_match_strategies import \
+from slp_abacus.slp_abacus.matcher.strategies.sg_sg_rule_match_strategies import \
     MatchSecurityGroupRuleBySecurityGroupIdStrategy, MatchSecurityGroupRuleByGraphStrategy
 
 _sg_1 = {'resource_id': 'SG1'}

@@ -3,10 +3,10 @@ from unittest.mock import Mock
 import pytest
 
 from otm.otm.entity.parent_type import ParentType
-from slp_tfplan.slp_tfplan.objects.tfplan_objects import TFPlanComponent
-from slp_tfplan.slp_tfplan.relationship.component_relationship_calculator import ComponentRelationshipType, \
+from slp_abacus.slp_abacus.objects.abacus_objects import AbacusComponent
+from slp_abacus.slp_abacus.relationship.component_relationship_calculator import ComponentRelationshipType, \
     ComponentRelationshipCalculator
-from slp_tfplan.tests.util.builders import build_mocked_component, build_mocked_otm
+from slp_abacus.tests.util.builders import build_mocked_component, build_mocked_otm
 
 _component_parent_0 = build_mocked_component({
     'component_name': 'component_parent_0',
@@ -62,7 +62,7 @@ class TestComponentRelationshipCalculator:
                      id='DESCENDANT_OF_ANY_CLONE (reverse)'),
         pytest.param(_component_child_1, _component_unrelated, ComponentRelationshipType.UNRELATED, id='UNRELATED'),
     ])
-    def test_get_relationship(self, component_from: TFPlanComponent, component_to: TFPlanComponent,
+    def test_get_relationship(self, component_from: AbacusComponent, component_to: AbacusComponent,
                               component_relationship_type: ComponentRelationshipType):
         # GIVEN two components which has or not some relationship between them
         # WHEN ComponentRelationshipCalculator::get_relationship is called

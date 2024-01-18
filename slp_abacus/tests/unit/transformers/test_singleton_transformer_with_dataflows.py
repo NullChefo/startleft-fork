@@ -2,9 +2,9 @@ import pytest
 from charset_normalizer.md import List
 
 from otm.otm.entity.dataflow import Dataflow
-from slp_tfplan.slp_tfplan.objects.tfplan_objects import TFPlanComponent
-from slp_tfplan.slp_tfplan.transformers.singleton_transformer import SingletonTransformer
-from slp_tfplan.tests.util.builders import build_mocked_component, \
+from slp_abacus.slp_abacus.objects.abacus_objects import AbacusComponent
+from slp_abacus.slp_abacus.transformers.singleton_transformer import SingletonTransformer
+from slp_abacus.tests.util.builders import build_mocked_component, \
     build_mocked_dataflow, build_mocked_otm
 
 _component_a = build_mocked_component({
@@ -68,7 +68,7 @@ class TestSingletonTransformerWithDataflows:
         pytest.param([_component_a, _component_b, _component_c], [_dataflow_a_c], id="[A -> C]"),
         pytest.param([_component_a, _component_b, _component_c], [_dataflow_b_c], id="[B -> C]")
     ])
-    def test_singleton_to_component_dataflow(self, components: List[TFPlanComponent], dataflows: List[Dataflow]):
+    def test_singleton_to_component_dataflow(self, components: List[AbacusComponent], dataflows: List[Dataflow]):
         """
         Components singleton (A,B) has dataflows to C
         """
@@ -89,7 +89,7 @@ class TestSingletonTransformerWithDataflows:
         pytest.param([_component_a, _component_b, _component_c], [_dataflow_c_a], id="[C -> A]"),
         pytest.param([_component_a, _component_b, _component_c], [_dataflow_c_b], id="[C -> B]"),
     ])
-    def test_component_to_singleton_dataflow(self, components: List[TFPlanComponent], dataflows: List[Dataflow]):
+    def test_component_to_singleton_dataflow(self, components: List[AbacusComponent], dataflows: List[Dataflow]):
         """
         Components C has dataflows to singleton (A,B)
         """
@@ -114,7 +114,7 @@ class TestSingletonTransformerWithDataflows:
                      [_dataflow_a_c, _dataflow_b_c_bidirectional], id="[A -> C and B <-> C]"),
     ])
     def test_singleton_to_component_dataflow_bidirectional(
-            self, components: List[TFPlanComponent], dataflows: List[Dataflow]):
+            self, components: List[AbacusComponent], dataflows: List[Dataflow]):
         """
         Components singleton (A,B) has some bidirectional dataflows to C
         """
@@ -140,7 +140,7 @@ class TestSingletonTransformerWithDataflows:
                      [_dataflow_c_a, _dataflow_c_b_bidirectional], id="[C -> A and C <-> B]"),
     ])
     def test_component_to_singleton_dataflow_bidirectional(
-            self, components: List[TFPlanComponent], dataflows: List[Dataflow]):
+            self, components: List[AbacusComponent], dataflows: List[Dataflow]):
         """
         Components C has some bidirectional dataflows to singleton (A,B)
         """
@@ -168,7 +168,7 @@ class TestSingletonTransformerWithDataflows:
                      [_dataflow_a_b, _dataflow_b_a], id="[A -> B and B -> A]")
     ])
     def test_components_same_singleton(
-            self, components: List[TFPlanComponent], dataflows: List[Dataflow]):
+            self, components: List[AbacusComponent], dataflows: List[Dataflow]):
         """
         Two components grouped by singleton (A,B) have dataflows between them
         """

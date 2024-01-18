@@ -4,25 +4,25 @@ from unittest.mock import MagicMock, patch
 from pytest import mark, param
 
 from sl_util.sl_util.file_utils import get_byte_data
-from slp_tfplan.slp_tfplan.load.security_groups_loader import SecurityGroupsLoader
-from slp_tfplan.tests.resources.test_resource_paths import ingress_cidr_from_property, \
+from slp_abacus.slp_abacus.load.security_groups_loader import SecurityGroupsLoader
+from slp_abacus.tests.resources.test_resource_paths import ingress_cidr_from_property, \
     ingress_multiple_cidr_from_property, ingress_multiple_cidr_from_rule, ingress_multiple_security_groups
 
 
 class TestSecurityGroupsLoader:
 
     def test_load_ingress_cidr_from_property(self):
-        # GIVEN a TFPlanOTM and a TFPlanResources
+        # GIVEN a AbacusOTM and a AbacusResources
         tf_plan_resources = json.loads(get_byte_data(ingress_cidr_from_property))
         otm = MagicMock(security_groups=[])
         graph = MagicMock()
 
         # WHEN the SecurityGroupsLoader is called
         sg_loader = SecurityGroupsLoader(otm, tf_plan_resources, graph)
-        with patch('slp_tfplan.slp_tfplan.matcher.sg_and_sgrules_matcher.SGAndSGRulesMatcher.match', return_value=[]):
+        with patch('slp_abacus.slp_abacus.matcher.sg_and_sgrules_matcher.SGAndSGRulesMatcher.match', return_value=[]):
             sg_loader.load()
 
-        # THEN the TFPlanOTM should have the expected SecurityGroups
+        # THEN the AbacusOTM should have the expected SecurityGroups
         assert len(otm.security_groups) == 1
         # AND the SecurityGroup should have the expected CIDR
         assert len(otm.security_groups[0].ingress_cidr) == 1
@@ -33,17 +33,17 @@ class TestSecurityGroupsLoader:
         assert otm.security_groups[0].ingress_cidr[0].to_port == '80'
 
     def test_load_multiple_ingress_cidr_from_property(self):
-        # GIVEN a TFPlanOTM and a TFPlanResources
+        # GIVEN a AbacusOTM and a AbacusResources
         tf_plan_resources = json.loads(get_byte_data(ingress_multiple_cidr_from_property))
         otm = MagicMock(security_groups=[])
         graph = MagicMock()
 
         # WHEN the SecurityGroupsLoader is called
         sg_loader = SecurityGroupsLoader(otm, tf_plan_resources, graph)
-        with patch('slp_tfplan.slp_tfplan.matcher.sg_and_sgrules_matcher.SGAndSGRulesMatcher.match', return_value=[]):
+        with patch('slp_abacus.slp_abacus.matcher.sg_and_sgrules_matcher.SGAndSGRulesMatcher.match', return_value=[]):
             sg_loader.load()
 
-        # THEN the TFPlanOTM should have the expected SecurityGroups
+        # THEN the AbacusOTM should have the expected SecurityGroups
         assert len(otm.security_groups) == 1
         # AND the SecurityGroup should have the expected CIDR
         assert len(otm.security_groups[0].ingress_cidr) == 2
@@ -64,19 +64,19 @@ class TestSecurityGroupsLoader:
          "aws_security_group_rule.http-ingress-2",
          "aws_security_group_rule.http-ingress-3"], id='sg rules related')])
     def test_load_multiple_ingress_cidr_from_rule(self, sg_rules_related):
-        # GIVEN a TFPlanOTM and a TFPlanResources
+        # GIVEN a AbacusOTM and a AbacusResources
         tf_plan_resources = json.loads(get_byte_data(ingress_multiple_cidr_from_rule))
         otm = MagicMock(security_groups=[])
         graph = MagicMock()
 
         # WHEN the SecurityGroupsLoader is called
         sg_loader = SecurityGroupsLoader(otm, tf_plan_resources, graph)
-        with patch('slp_tfplan.slp_tfplan.matcher.sg_and_sgrules_matcher.SGAndSGRulesMatcher.match',
+        with patch('slp_abacus.slp_abacus.matcher.sg_and_sgrules_matcher.SGAndSGRulesMatcher.match',
                    return_value=list(filter(lambda sg_rule: sg_rule['resource_id']
                                                             in sg_rules_related, sg_loader._sg_rules))):
             sg_loader.load()
 
-        # THEN the TFPlanOTM should have the expected SecurityGroups
+        # THEN the AbacusOTM should have the expected SecurityGroups
         assert len(otm.security_groups) == 1
         # AND the SecurityGroup should have the expected CIDR
         assert len(otm.security_groups[0].ingress_cidr) == 3
@@ -99,7 +99,7 @@ class TestSecurityGroupsLoader:
         assert otm.security_groups[0].ingress_cidr[2].to_port == '0'
 
     def test_load_multiple_security_groups(self):
-        # GIVEN a TFPlanOTM and a TFPlanResources
+        # GIVEN a AbacusOTM and a AbacusResources
         tf_plan_resources = json.loads(get_byte_data(ingress_multiple_security_groups))
         otm = MagicMock(security_groups=[])
         graph = MagicMock()
@@ -107,7 +107,7 @@ class TestSecurityGroupsLoader:
         # WHEN the SecurityGroupsLoader is called
         SecurityGroupsLoader(otm, tf_plan_resources, graph).load()
 
-        # THEN the TFPlanOTM should have the expected SecurityGroups
+        # THEN the AbacusOTM should have the expected SecurityGroups
         assert len(otm.security_groups) == 2
         # AND the SecurityGroup should have the expected CIDR
         assert len(otm.security_groups[0].ingress_cidr) == 1

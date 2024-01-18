@@ -4,10 +4,10 @@ from unittest.mock import Mock
 
 from pytest import mark, param, raises, fixture
 
-from slp_tfplan.slp_tfplan.transformers.dataflow.dataflow_creator import DataflowCreator
-from slp_tfplan.slp_tfplan.transformers.dataflow.strategies.dataflow_creation_strategy import \
+from slp_abacus.slp_abacus.transformers.dataflow.dataflow_creator import DataflowCreator
+from slp_abacus.slp_abacus.transformers.dataflow.strategies.dataflow_creation_strategy import \
     DataflowCreationStrategy, create_dataflow
-from slp_tfplan.tests.util.builders import build_tfgraph, MockedException
+from slp_abacus.tests.util.builders import build_tfgraph, MockedException
 
 ERROR_MESSAGE = 'Error creating dataflows'
 
