@@ -6,7 +6,7 @@ from networkx import DiGraph
 from slp_abacus.slp_abacus.objects.abacus_objects import AbacusComponent
 from slp_abacus.slp_abacus.load.abacus_to_resource_dict import remove_name_prefix
 
-
+# The relationship is determined in the json example files via OutConnections and ComponentTypeName
 class RelationshipsExtractor:
 
     def __init__(self, graph: DiGraph, mapped_resources_ids: [str]):

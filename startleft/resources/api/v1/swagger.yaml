@@ -307,6 +307,7 @@ components:
         - CLOUDFORMATION
         - TERRAFORM
         - TFPLAN
+        - ABACUS
       type: string
       description: Type of IaC file
       example: TERRAFORM

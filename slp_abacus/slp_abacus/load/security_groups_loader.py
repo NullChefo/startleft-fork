@@ -1,7 +1,5 @@
 from typing import List, Dict, Union
 
-from networkx import DiGraph
-
 from slp_abacus.slp_abacus.graph.relationships_extractor import RelationshipsExtractor
 from slp_abacus.slp_abacus.load.resource_data_extractors import security_group_id_from_rule, \
     description_from_rule, protocol_from_rule, from_port_from_rule, to_port_from_rule, cidr_blocks_from_rule, \
@@ -100,15 +98,14 @@ class SecurityGroupCIDRLoader:
 
 class SecurityGroupsLoader:
 
-    def __init__(self, otm: AbacusOTM, abacus: {}, graph: DiGraph):
+    def __init__(self, otm: AbacusOTM, abacus: {}):
         self.otm = otm
 
         self._resources = abacus['resource']
         self._sg_rules: List[Dict[str, str]] = _get_security_group_rules(self._resources)
 
         self._relationships_extractor = RelationshipsExtractor(
-            mapped_resources_ids=self.otm.mapped_resources_ids,
-            graph=graph)
+            mapped_resources_ids=self.otm.mapped_resources_ids)
 
     def load(self):
         for resource in self._resources:
